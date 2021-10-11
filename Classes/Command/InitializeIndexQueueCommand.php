@@ -16,12 +16,9 @@ class InitializeIndexQueueCommand extends Command
     {
         $this->addArgument('rootpage', InputArgument::REQUIRED, 'site root page id');
         $this->addArgument('type', InputArgument::OPTIONAL, 'List of indexing configurations. Leave empty for all')
-            ->setDescription('Initialize IndexQueue by type and site');
+            ->setDescription('Initialize index queue by type and site');
     }
 
-    /**
-     * @inheritdoc
-     */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         /** @var SiteRepository $siteRepository */

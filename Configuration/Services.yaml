@@ -14,3 +14,9 @@ services:
             - name: 'console.command'
               command: 'solrcommands:initializeindexqueue'
               schedulable: true
+
+    Networkteam\SolrCommands\Command\CleanupIndexCommand:
+        tags:
+            - name: 'console.command'
+              command: 'solrcommands:cleanupindex'
+              schedulable: true
