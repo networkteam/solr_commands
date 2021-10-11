@@ -1,0 +1,16 @@
+# https://docs.typo3.org/m/typo3/reference-coreapi/master/en-us/ApiOverview/DependencyInjection/Index.html
+
+services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+        public: false
+
+    Networkteam\SolrCommands\:
+        resource: '../Classes/*'
+
+    Networkteam\SolrCommands\Command\InitializeIndexQueueCommand:
+        tags:
+            - name: 'console.command'
+              command: 'solrcommands:initializeindexqueue'
+              schedulable: true
