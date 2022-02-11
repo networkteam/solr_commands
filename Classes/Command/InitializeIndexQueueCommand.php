@@ -14,7 +14,7 @@ class InitializeIndexQueueCommand extends Command
 {
     public function configure()
     {
-        $this->addArgument('rootpage', InputArgument::REQUIRED, 'site root page id');
+        $this->addArgument('rootpage', InputArgument::OPTIONAL, 'site root page id', '*');
         $this->addArgument('type', InputArgument::OPTIONAL, 'List of indexing configurations. Leave empty for all')
             ->setDescription('Initialize index queue by type and site');
     }
@@ -23,20 +23,29 @@ class InitializeIndexQueueCommand extends Command
     {
         /** @var SiteRepository $siteRepository */
         $siteRepository = GeneralUtility::makeInstance(SiteRepository::class);
-        $site = $siteRepository->getSiteByPageId((integer)$input->getArgument('rootpage'));
+
+        if ($input->getArgument('rootpage') != '*') {
+            $sites[] = $siteRepository->getSiteByPageId((integer)$input->getArgument('rootpage'));
+        } else {
+            $sites = $siteRepository->getAvailableSites();
+        }
 
         $indexingConfigurations = GeneralUtility::trimExplode(',', $input->getArgument('type') ?? '*');
-
         /** @var Queue $indexQueue */
         $indexQueue = GeneralUtility::makeInstance(Queue::class);
-        $initializationStatus = $indexQueue->getInitializationService()->initializeBySiteAndIndexConfigurations($site, $indexingConfigurations);
 
         // Even unknown configurations return true. This should better be fixed in EXT:solr.
         $wasSuccesful = 0;
-        foreach ($initializationStatus as $name => $status) {
-            if($status === false) {
-                $wasSuccesful = 1;
-                $output->writeln(sprintf('Failed for configuration %s', $name));
+        foreach ($sites as $site) {
+            $initializationStatus = $indexQueue->getInitializationService()->initializeBySiteAndIndexConfigurations($site, $indexingConfigurations);
+
+            // Even unknown configurations return true. This should better be fixed in EXT:solr.
+            $wasSuccesful = 0;
+            foreach ($initializationStatus as $name => $status) {
+                if($status === false) {
+                    $wasSuccesful = 1;
+                    $output->writeln(sprintf('Failed for configuration %s', $name));
+                }
             }
         }
 
