@@ -6,5 +6,6 @@ Command line commands for EXT:solr
 
 * [x] Initialize index queue by site and type
 * [x] Delete documents in index which are not in the index queue
+* [x] Index all sites at once
 
 The commands can be used as scheduler tasks.
