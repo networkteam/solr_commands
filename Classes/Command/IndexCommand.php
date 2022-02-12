@@ -33,7 +33,7 @@ class IndexCommand extends Command
 
         $oneTaskFailed = false;
         foreach ($sites as $site) {
-            if ($input->getOption('verbose')) {
+            if ($output->isVerbose()) {
                 $output->writeln(sprintf('Indexing %s (Root page %d)', $site->getDomain(), $site->getRootPageId()));
             }
 
