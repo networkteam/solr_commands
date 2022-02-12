@@ -1,7 +1,7 @@
 {
   "name": "networkteam/solr-commands",
   "type": "typo3-cms-extension",
-  "description": "Cli commands for EXT:solr",
+  "description": "A TYPO3 Extension providing command line commands for EXT:solr. IndexQueue initialisation. Indexing. Garbage collection. All sites at once.",
   "license": [
     "GPL-2.0-or-later"
   ],

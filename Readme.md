@@ -1,11 +1,11 @@
-# TYPO3 Extension Solr Commands
+# Solr Commands
 
-Command line commands for EXT:solr
+A TYPO3 Extension providing command line commands for EXT:solr
 
 ## Features
 
-* [x] Initialize index queue by site and type
-* [x] Delete documents in index which are not in the index queue
-* [x] Index all sites at once
+* Initialize index queue by site and type
+* Delete documents in index which are not in the index queue
+* Index all sites at once
 
 The commands can be used as scheduler tasks.
