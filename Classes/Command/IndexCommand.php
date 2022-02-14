@@ -15,7 +15,7 @@ class IndexCommand extends Command
     public function configure()
     {
         $this->addArgument('rootpage', InputArgument::OPTIONAL, 'Site root page id', '*');
-        $this->addArgument('limit', InputArgument::OPTIONAL, 'Limit documents per site', PHP_INT_MAX)
+        $this->addArgument('limit', InputArgument::OPTIONAL, 'Limit documents per site')
             ->setDescription('Index documents of all sites');
     }
 
@@ -31,6 +31,12 @@ class IndexCommand extends Command
             $sites[] = $siteRepository->getSiteByPageId((integer)$input->getArgument('rootpage'));
         }
 
+        if ($input->hasArgument('limit') &&  (integer)$input->getArgument('limit') > 0) {
+            $limit = (integer)$input->getArgument('limit');
+        } else {
+            $limit = PHP_INT_MAX;
+        }
+
         $oneTaskFailed = false;
         foreach ($sites as $site) {
             if ($output->isVerbose()) {
@@ -39,7 +45,7 @@ class IndexCommand extends Command
 
             $indexTask = GeneralUtility::makeInstance(IndexQueueWorkerTask::class);
             $indexTask->setRootPageId($site->getRootPageId());
-            $indexTask->setDocumentsToIndexLimit((integer)$input->getArgument('limit'));
+            $indexTask->setDocumentsToIndexLimit($limit);
 
             if (!$indexTask->execute()) {
                 $oneTaskFailed = true;
