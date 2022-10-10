@@ -60,10 +60,9 @@ class CleanupIndexCommand extends Command
                     $query->addParam('start', $i == 0 ? 1 : $i * 1000 + 1);
                     $query->addParam('rows', 1000);
                     $response = $server->getReadService()->search($query);
-
-                    /** @var Document[] $documents */
                     $documents = $response->getParsedData()->response->docs;
 
+                    /** @var Document $document */
                     foreach($documents ?? [] as $document) {
                         $uid = $document->getFields()['uid'];
                         if (!in_array($uid, $indexQueueItems)) {
@@ -105,7 +104,7 @@ class CleanupIndexCommand extends Command
             ->from('tx_solr_indexqueue_item')
             ->groupBy('root', 'item_type')
             ->execute()
-            ->fetchAll();
+            ->fetchAllAssociative();
 
         return $map;
     }
@@ -125,7 +124,7 @@ class CleanupIndexCommand extends Command
             ->execute();
 
         $items = [];
-        while ($row = $query->fetch()) {
+        while ($row = $query->fetchAssociative()) {
             $items[] = $row['item_uid'];
         }
 

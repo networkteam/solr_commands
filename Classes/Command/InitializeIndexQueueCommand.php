@@ -2,6 +2,7 @@
 
 namespace Networkteam\SolrCommands\Command;
 
+use ApacheSolrForTypo3\Solr\Domain\Site\Site;
 use ApacheSolrForTypo3\Solr\Domain\Site\SiteRepository;
 use ApacheSolrForTypo3\Solr\IndexQueue\Queue;
 use Symfony\Component\Console\Command\Command;
@@ -37,6 +38,9 @@ class InitializeIndexQueueCommand extends Command
         // Even unknown configurations return true. This should better be fixed in EXT:solr.
         $wasSuccesful = 0;
         foreach ($sites as $site) {
+            if (!$site instanceof Site) {
+                throw new \Exception('No instance of a Solr Site given', 1665390364);
+            }
             $initializationStatus = $indexQueue->getInitializationService()->initializeBySiteAndIndexConfigurations($site, $indexingConfigurations);
 
             // Even unknown configurations return true. This should better be fixed in EXT:solr.
