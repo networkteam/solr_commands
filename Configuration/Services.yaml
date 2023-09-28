@@ -32,3 +32,9 @@ services:
             - name: 'console.command'
               command: 'solrcommands:index'
               schedulable: true
+
+    Networkteam\SolrCommands\Command\ListSitesCommand:
+        tags:
+            - name: 'console.command'
+              command: 'solrcommands:listsites'
+              schedulable: true
