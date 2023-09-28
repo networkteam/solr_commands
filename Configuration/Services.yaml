@@ -21,6 +21,12 @@ services:
               command: 'solrcommands:cleanupindex'
               schedulable: true
 
+    Networkteam\SolrCommands\Command\ClearIndexCommand:
+        tags:
+            - name: 'console.command'
+              command: 'solrcommands:clearindex'
+              schedulable: true
+
     Networkteam\SolrCommands\Command\IndexCommand:
         tags:
             - name: 'console.command'
