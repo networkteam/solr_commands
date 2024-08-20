@@ -10,6 +10,7 @@ use ApacheSolrForTypo3\Solr\System\Solr\SolrConnection;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -61,8 +62,8 @@ class CleanupIndexCommand extends Command
                     $query->addParam('rows', 1000);
                     $response = $server->getReadService()->search($query);
 
-                    /** @var Document[] $documents */
-                    $documents = $response->getParsedData()->response->docs;
+                    /** @var Document[]|null $documents */
+                    $documents = $response->getParsedData()?->response?->docs;
 
                     foreach($documents ?? [] as $document) {
                         $uid = $document->getFields()['uid'];
