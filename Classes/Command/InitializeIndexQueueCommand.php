@@ -25,7 +25,11 @@ class InitializeIndexQueueCommand extends Command
         $siteRepository = GeneralUtility::makeInstance(SiteRepository::class);
 
         if ($input->getArgument('rootpage') != '*') {
-            $sites[] = $siteRepository->getSiteByPageId((integer)$input->getArgument('rootpage'));
+            $sites = [];
+            $site = $siteRepository->getSiteByPageId((integer)$input->getArgument('rootpage'));
+            if ($site) {
+                $sites[] = $site;
+            }
         } else {
             $sites = $siteRepository->getAvailableSites();
         }

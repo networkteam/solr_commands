@@ -26,9 +26,12 @@ class IndexCommand extends Command
 
         if (($input->getArgument('rootpage') ?? '*') == '*') {
             $sites = $siteRepository->getAvailableSites();
-
         } else {
-            $sites[] = $siteRepository->getSiteByPageId((integer)$input->getArgument('rootpage'));
+            $sites = [];
+            $site = $siteRepository->getSiteByPageId((integer)$input->getArgument('rootpage'));
+            if ($site) {
+                $sites[] = $site;
+            }
         }
 
         if ($input->hasArgument('limit') &&  (integer)$input->getArgument('limit') > 0) {

@@ -6,7 +6,6 @@ use ApacheSolrForTypo3\Solr\ConnectionManager;
 use ApacheSolrForTypo3\Solr\Domain\Search\Query\Query;
 use ApacheSolrForTypo3\Solr\Domain\Site\SiteRepository;
 use ApacheSolrForTypo3\Solr\System\Solr\Document\Document;
-use ApacheSolrForTypo3\Solr\System\Solr\SolrConnection;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -34,9 +33,11 @@ class CleanupIndexCommand extends Command
             $itemType = $item['item_type'];
 
             $site = $siteRepository->getSiteByPageId($rootPage);
+            if (!$site) {
+                continue;
+            }
             $indexQueueItems = $this->getItemsByRootPageAndType($rootPage, $itemType);
 
-            /** @var SolrConnection[] $solrServers */
             $solrServers = GeneralUtility::makeInstance(ConnectionManager::class)->getConnectionsBySite($site);
 
             /** @var Query $query */
@@ -49,7 +50,7 @@ class CleanupIndexCommand extends Command
 
             foreach ($solrServers as $server) {
                 $response = $server->getReadService()->search($query);
-                $numFound = $response->getParsedData()->response->numFound;
+                $numFound = $response->getParsedData()?->response?->numFound ?? 0;
                 if ($numFound == 0) {
                     continue;
                 }
@@ -98,7 +99,6 @@ class CleanupIndexCommand extends Command
 
     protected function getRootPageItemTypeMap(): array
     {
-        /** @var QueryBuilder $queryBuilder */
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
             ->getQueryBuilderForTable('tx_solr_indexqueue_item');
         $map = $queryBuilder
