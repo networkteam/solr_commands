@@ -110,7 +110,7 @@ class CleanupIndexCommand extends Command
         return $map;
     }
 
-    protected function getItemsByRootPageAndType($rootPage, $type): array
+    protected function getItemsByRootPageAndType(int $rootPage, string $type): array
     {
         /** @var QueryBuilder $queryBuilder */
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
