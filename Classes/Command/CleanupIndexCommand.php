@@ -104,8 +104,8 @@ class CleanupIndexCommand extends Command
             ->select('root', 'item_type')
             ->from('tx_solr_indexqueue_item')
             ->groupBy('root', 'item_type')
-            ->execute()
-            ->fetchAll();
+            ->executeQuery()
+            ->fetchAllAssociative();
 
         return $map;
     }
@@ -119,16 +119,12 @@ class CleanupIndexCommand extends Command
             ->select('item_uid')
             ->from('tx_solr_indexqueue_item')
             ->where(
-                $queryBuilder->expr()->eq('root', $queryBuilder->createNamedParameter($rootPage, \PDO::PARAM_INT)),
+                $queryBuilder->expr()->eq('root', $queryBuilder->createNamedParameter($rootPage, Connection::PARAM_INT)),
                 $queryBuilder->expr()->eq('item_type', $queryBuilder->createNamedParameter($type))
             )
-            ->execute();
+            ->executeQuery();
 
-        $items = [];
-        while ($row = $query->fetch()) {
-            $items[] = $row['item_uid'];
-        }
-
+        $items = $query->fetchFirstColumn();
         return $items;
     }
 }
