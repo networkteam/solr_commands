@@ -5,7 +5,6 @@ namespace Networkteam\SolrCommands\Command;
 use ApacheSolrForTypo3\Solr\ConnectionManager;
 use ApacheSolrForTypo3\Solr\Domain\Site\Site;
 use ApacheSolrForTypo3\Solr\Domain\Site\SiteRepository;
-use ApacheSolrForTypo3\Solr\System\Solr\SolrConnection;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -32,9 +31,7 @@ class ClearIndexCommand extends Command
             return 1;
         }
 
-        /** @var ConnectionManager $connectionManager */
         $connectionManager = GeneralUtility::makeInstance(ConnectionManager::class);
-        /** @var SolrConnection $connection*/
         foreach ($connectionManager->getConnectionsBySite($site) as $connection) {
             if ($type = $input->getArgument('type')) {
                 $connection->getWriteService()->deleteByType($type);
