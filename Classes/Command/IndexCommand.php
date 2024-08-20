@@ -40,7 +40,13 @@ class IndexCommand extends Command
         $oneTaskFailed = false;
         foreach ($sites as $site) {
             if ($output->isVerbose()) {
-                $output->writeln(sprintf('Indexing %s (Root page %d)', $site->getDomain(), $site->getRootPageId()));
+                $output->writeln(
+                    sprintf(
+                        'Indexing %s (Root page %d)',
+                        $site->getTypo3SiteObject()->getBase(),
+                        $site->getRootPageId()
+                    )
+                );
             }
 
             $indexTask = GeneralUtility::makeInstance(IndexQueueWorkerTask::class);
