@@ -21,7 +21,7 @@ class CleanupIndexCommand extends Command
         $this->setDescription('Delete documents in index which are not in the index queue');
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $rootPageItemTypeMap = $this->getRootPageItemTypeMap();
 

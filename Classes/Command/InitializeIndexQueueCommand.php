@@ -19,7 +19,7 @@ class InitializeIndexQueueCommand extends Command
             ->setDescription('Initialize index queue by type and site');
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         /** @var SiteRepository $siteRepository */
         $siteRepository = GeneralUtility::makeInstance(SiteRepository::class);

@@ -21,7 +21,7 @@ class ClearIndexCommand extends Command
         ->addArgument('type', InputArgument::OPTIONAL, 'A type. Normally a table name');
     }
 
-    public function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         /** @var SiteRepository $siteRepository */
         $siteRepository = GeneralUtility::makeInstance(SiteRepository::class);
