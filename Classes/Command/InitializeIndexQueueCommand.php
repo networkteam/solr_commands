@@ -41,7 +41,7 @@ class InitializeIndexQueueCommand extends Command
         // Even unknown configurations return true. This should better be fixed in EXT:solr.
         $wasSuccesful = 0;
         foreach ($sites as $site) {
-            $initializationStatus = $indexQueue->getInitializationService()->initializeBySiteAndIndexConfigurations($site, $indexingConfigurations);
+            $initializationStatus = $indexQueue->getQueueInitializationService()->initializeBySiteAndIndexConfigurations($site, $indexingConfigurations);
 
             // Even unknown configurations return true. This should better be fixed in EXT:solr.
             $wasSuccesful = 0;
