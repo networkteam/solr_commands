@@ -21,7 +21,11 @@ class ListSitesCommand extends Command
         /** @var SiteRepository $siteRepository */
         $siteRepository = GeneralUtility::makeInstance(SiteRepository::class);
 
-        foreach ($sites = $siteRepository->getAvailableSites() as $site) {
+        $sites = $siteRepository->getAvailableSites();
+        usort($sites, function(Site $a, Site $b) {
+            return strcmp($a->getLabel(), $b->getLabel());
+        });
+        foreach ($sites as $site) {
             $output->writeln($site->getLabel());
         }
 
