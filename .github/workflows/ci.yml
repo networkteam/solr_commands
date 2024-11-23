@@ -1,0 +1,45 @@
+name: CI
+
+on: [push, pull_request]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        env:
+          # See version matrix @ https://typo3.org/cms/roadmap
+          - { php: 8.2 }
+          - { php: 8.3 }
+
+    env: ${{ matrix.env }}
+
+    steps:
+      - uses: actions/checkout@v1
+
+      - name: Set up PHP Version
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.env.php }}
+          tools: composer:v2
+
+      - name: Lint PHP files
+        run: find *.php Classes -name '*.php' -print0 | xargs -0 -n 1 -P 4 php -l
+
+      - name: Validate composer.json and composer.lock
+        run: composer validate
+
+      - name: Cache dependencies
+        uses: actions/cache@v1
+        with:
+          path: ~/.composer/cache
+          key: dependencies-composer-${{ hashFiles('composer.json') }}
+
+      - name: Install composer dependencies
+        run: |
+          composer install
+
+      - name: Run PHPStan
+        run: composer phpstan

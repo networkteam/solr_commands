@@ -6,8 +6,8 @@
     "GPL-2.0-or-later"
   ],
   "require": {
-    "apache-solr-for-typo3/solr": "^12",
-    "typo3/cms-core": "^12"
+    "apache-solr-for-typo3/solr": "^13 || 13.0.x-dev",
+    "typo3/cms-core": "^13.4"
   },
   "autoload": {
     "psr-4": {
@@ -21,6 +21,9 @@
     "typo3/cms": {
       "extension-key": "solr_commands",
       "web-dir": ".Build/Web"
+    },
+    "branch-alias": {
+      "dev-master": "13.4.x-dev"
     }
   },
   "config": {
