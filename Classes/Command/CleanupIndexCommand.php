@@ -59,7 +59,7 @@ class CleanupIndexCommand extends Command
                 $i = 0;
                 $pages = ceil($numFound / 1000);
                 while ($i <= $pages) {
-                    $query->addParam('start', $i == 0 ? 1 : $i * 1000 + 1);
+                    $query->addParam('start', $i * 1000);
                     $query->addParam('rows', 1000);
                     $response = $server->getReadService()->search($query);
 
